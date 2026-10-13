@@ -1,0 +1,756 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SPICY BIRYANI WAALA</title>
+<style>
+:root{--red:#8e1b20;--dark:#671216;--bg:#f3f5f8;--line:#e1e6ed}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);font-family:Arial,sans-serif;color:#172338}
+header{background:linear-gradient(110deg,#741417,#991d21);color:white;padding:20px 24px}
+.head{max-width:1200px;margin:auto;display:flex;align-items:center;gap:16px}
+.menu-btn{background:transparent;border:0;color:white;font-size:30px;cursor:pointer;padding:2px 8px}
+.brand{display:flex;align-items:center;gap:12px;flex:1}
+.brand-icon{font-size:36px}
+h1{font-size:clamp(19px,3vw,30px);margin:0}
+.datebox{background:white;color:#222;border-radius:9px;padding:8px 12px}
+.datebox label{font-size:12px;display:block;margin-bottom:4px;color:#666}
+input,select,button,textarea{font:inherit}
+main{max-width:1200px;margin:24px auto;padding:0 20px}
+.card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:24px;margin-bottom:20px;box-shadow:0 2px 8px #19263a08}
+h2{font-size:23px;margin:0 0 25px}
+.field{margin-bottom:22px}
+label{font-weight:700;display:block;margin-bottom:10px}
+.required{color:#d71920;font-weight:bold}
+select,input[type=number],input[type=text],textarea{width:100%;padding:15px;border:1px solid #ccd5e0;border-radius:9px;background:white;min-height:52px;color:#172338}
+textarea{resize:vertical;min-height:130px;line-height:1.5}
+select:focus,input:focus,textarea:focus{outline:2px solid #ead0d2}
+select:disabled{background:#f0f1f3;color:#888}
+.sizes{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.size{min-height:82px;border:1px solid #d5dce5;border-radius:10px;background:#f7f8fa;color:#6d7786;font-weight:700;font-size:20px;cursor:pointer}
+.size.active{background:var(--red);color:white;border-color:var(--red)}
+.save{width:100%;padding:17px;border:0;border-radius:9px;background:var(--red);color:white;font-size:17px;font-weight:bold;cursor:pointer}
+.save:hover{background:var(--dark)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.stat{border:1px solid var(--line);border-radius:10px;padding:22px;display:flex;align-items:center;gap:15px;min-width:0}
+.stat:nth-child(1){background:#fff0f0;border-color:#ffcaca}
+.stat:nth-child(2){background:#effbf2;border-color:#b9efc8}
+.stat:nth-child(3){background:#eff7ff;border-color:#b9ddff}
+.ico{font-size:29px}
+.stat p{margin:0 0 12px;font-weight:bold}
+.stat strong{font-size:clamp(22px,3vw,32px);overflow-wrap:anywhere}
+.total{display:flex;justify-content:space-between;align-items:center;gap:12px;background:#fff8eb;border:1px solid #ffe2ad;border-radius:10px;padding:22px;margin-top:20px}
+.total span{font-size:21px;font-weight:bold;color:#171717}
+.total strong{font-size:32px;color:#7e171b}
+.history-title{margin-bottom:16px}
+.table-wrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:650px}
+th,td{text-align:left;padding:15px 12px;border-bottom:1px solid #e4e9ef;font-size:14px;vertical-align:top}
+th{background:#f1f4f8;white-space:nowrap}
+.tag{background:#f2f4f7;border-radius:6px;padding:6px 9px}
+.del{background:#fff0f0;border:0;border-radius:7px;color:#b52222;padding:9px 11px;cursor:pointer}
+.empty{text-align:center;color:#718096;padding:25px}
+footer{text-align:center;color:#718096;font-size:14px;padding:8px 20px 30px;line-height:1.8}
+[hidden]{display:none!important}
+.drawer-backdrop{position:fixed;inset:0;background:#0006;z-index:10}
+.drawer{position:fixed;z-index:11;top:0;left:0;height:100%;width:290px;max-width:85vw;background:white;box-shadow:5px 0 25px #0002;transform:translateX(-110%);transition:transform .22s ease;padding-bottom:20px;overflow-y:auto}
+.drawer.open{transform:translateX(0)}
+.drawer-head{background:var(--red);color:white;padding:24px 18px;font-size:21px;font-weight:bold;display:flex;justify-content:space-between;align-items:center}
+.close-menu{background:transparent;color:white;border:0;font-size:27px;cursor:pointer}
+.nav-option{display:block;width:100%;text-align:left;border:0;background:white;padding:19px 22px;font-size:16px;font-weight:bold;color:#293548;cursor:pointer;border-bottom:1px solid #eee}
+.nav-option.active,.nav-option:hover{background:#f8e9ea;color:var(--red)}
+.nav-icon{display:inline-block;width:35px;font-size:20px}
+.section-label{font-size:12px;color:#777;padding:20px 22px 8px}
+.report-note{font-size:13px;color:#687386;line-height:1.6}
+@media(max-width:650px){
+ header{padding:16px 10px}.head{gap:7px;flex-wrap:wrap}
+ .brand{gap:7px}.brand-icon{font-size:27px}h1{font-size:18px}
+ .menu-btn{font-size:27px;padding:2px 4px}.datebox{margin-left:auto}
+ main{padding:0 10px;margin-top:14px}.card{padding:15px;margin-bottom:14px}
+ h2{font-size:20px;margin-bottom:20px}.stats{grid-template-columns:1fr}
+ .stat{padding:16px}.stat strong{font-size:27px}
+ .sizes{gap:10px}.size{font-size:17px;min-height:70px}
+ .total{padding:16px}.total span{font-size:16px}.total strong{font-size:23px}
+}
+</style>
+</head>
+<body>
+<header>
+ <div class="head">
+  <button class="menu-btn" id="menuOpen" aria-label="Open menu">☰</button>
+  <div class="brand"><span class="brand-icon">🍛</span><h1>SPICY BIRYANI WAALA</h1></div>
+  <div class="datebox"><label for="date">Select Date</label><input id="date" type="date"></div>
+ </div>
+</header>
+
+<div class="drawer-backdrop" id="backdrop" hidden></div>
+<aside class="drawer" id="drawer">
+ <div class="drawer-head"><span>☰ Menu</span><button class="close-menu" id="menuClose">×</button></div>
+ <div class="section-label">MAIN MENU</div>
+ <button class="nav-option active" data-page="sales"><span class="nav-icon">🧾</span>Sales</button>
+ <button class="nav-option" data-page="investment"><span class="nav-icon">💰</span>Investment</button>
+ <button class="nav-option" data-page="expected"><span class="nav-icon">📝</span>Expected Sale &amp; Dump</button>
+ <button class="nav-option" data-page="analysis"><span class="nav-icon">📊</span>All Data &amp; Analysis</button>
+</aside>
+
+<main>
+<!-- SALES PAGE -->
+<div id="salesPage">
+ <section class="card">
+  <h2>🔴 Add Offline Sale</h2>
+  <form id="salesForm">
+   <div class="field">
+    <label for="item">Select Item <span class="required">*</span></label>
+    <select id="item" required>
+     <option value="">-- Select Item --</option>
+     <option>Hyderabadi Biryani</option>
+     <option>Hyderabadi Biryani Rice</option>
+     <option>Ambur Biryani</option>
+     <option>Khuska</option>
+     <option>Kabab</option>
+    </select>
+   </div>
+   <div class="field" id="sizeArea" hidden>
+    <label>Select Size <span class="required">*</span></label>
+    <div class="sizes">
+     <button type="button" class="size" data-size="Half">HALF</button>
+     <button type="button" class="size" data-size="Full">FULL</button>
+    </div>
+   </div>
+   <div class="field" id="paymentArea" hidden>
+    <label>Payment Type <span class="required">*</span></label>
+    <div class="sizes">
+     <button type="button" class="size" data-payment="Cash">CASH</button>
+     <button type="button" class="size" data-payment="UPI">UPI</button>
+    </div>
+   </div>
+   <div class="field">
+    <label for="amount">Amount (₹) <span class="required">*</span></label>
+    <input id="amount" type="number" min="0.01" step="0.01" placeholder="Enter amount" required>
+   </div>
+   <button class="save" type="submit">▣ &nbsp; Save Entry</button>
+   <p id="salesMessage" hidden style="color:green">Entry saved successfully!</p>
+  </form>
+ </section>
+ <section class="card">
+  <div class="stats">
+   <div class="stat"><span class="ico">📋</span><div><p>Total Orders</p><strong id="orders">0</strong></div></div>
+   <div class="stat"><span class="ico">🍲</span><div><p>Half Sold</p><strong id="halves">0</strong></div></div>
+   <div class="stat"><span class="ico">🥘</span><div><p>Full Sold</p><strong id="fulls">0</strong></div></div>
+  </div>
+  <div class="total"><span>▤ &nbsp; Total Offline Sales</span><strong id="total">₹0</strong></div>
+ </section>
+ <section class="card">
+  <h2 class="history-title">☷ Sales History</h2>
+  <div class="table-wrap">
+   <table><thead><tr><th>Date</th><th>Item</th><th>Size</th><th>Payment</th><th>Amount</th><th>Action</th></tr></thead><tbody id="records"></tbody></table>
+   <div id="empty" class="empty">No sales recorded for this date.</div>
+  </div>
+ </section>
+</div>
+
+<!-- INVESTMENT PAGE -->
+<div id="investmentPage" hidden>
+ <section class="card">
+  <h2>💰 Add Investment / Expense</h2>
+  <form id="investmentForm">
+   <div class="field">
+    <label for="invCategory">Select Category <span class="required">*</span></label>
+    <select id="invCategory" required>
+     <option value="">-- Select Biryani / Kabab --</option>
+     <option value="Biryani">Biryani</option>
+     <option value="Kabab">Kabab</option>
+    </select>
+   </div>
+   <div class="field">
+    <label for="invItem">Select Item <span class="required">*</span></label>
+    <select id="invItem" required disabled><option value="">-- Select Item --</option></select>
+   </div>
+   <div class="field" id="quantityArea" hidden>
+    <label for="quantity">Quantity <span class="required">*</span></label>
+    <input id="quantity" type="number" min="0.01" step="any" placeholder="Enter quantity">
+   </div>
+   <div class="field" id="pieceArea" hidden>
+    <label for="pieces">Chicken Piece Count <span class="required">*</span></label>
+    <input id="pieces" type="number" min="1" step="1" placeholder="Enter number of pieces">
+   </div>
+   <div class="field" id="unitArea" hidden>
+    <label for="unit">Quantity Unit <span class="required">*</span></label>
+    <select id="unit">
+     <option value="">-- Select Unit --</option>
+     <option value="kg">Kilogram (kg)</option>
+     <option value="g">Gram (g)</option>
+     <option value="litre">Litre</option>
+     <option value="ml">Millilitre (ml)</option>
+     <option value="packet">Packet</option>
+     <option value="bag">Bag</option>
+     <option value="piece">Piece</option>
+     <option value="other">Other / Not specified</option>
+    </select>
+   </div>
+   <div class="field">
+    <label for="invAmount">Investment Amount (₹) <span class="required">*</span></label>
+    <input id="invAmount" type="number" min="0.01" step="0.01" placeholder="Enter total cost" required>
+   </div>
+   <div class="field">
+    <label for="invNote">Note (Optional)</label>
+    <input id="invNote" type="text" placeholder="Shop name or other details">
+   </div>
+   <button class="save" type="submit">▣ &nbsp; Save Investment</button>
+   <p id="invMessage" hidden style="color:green">Investment saved successfully!</p>
+  </form>
+ </section>
+ <section class="card">
+  <div class="stats">
+   <div class="stat"><span class="ico">🛒</span><div><p>Total Purchases</p><strong id="invCount">0</strong></div></div>
+   <div class="stat"><span class="ico">🍗</span><div><p>Chicken Pieces</p><strong id="invPieces">0</strong></div></div>
+   <div class="stat"><span class="ico">🧾</span><div><p>Items Purchased</p><strong id="invItems">0</strong></div></div>
+  </div>
+  <div class="total"><span>▤ &nbsp; Total Investment</span><strong id="invTotal">₹0</strong></div>
+ </section>
+ <section class="card">
+  <h2 class="history-title">☷ Investment History</h2>
+  <div class="table-wrap">
+   <table><thead><tr><th>Date</th><th>Category</th><th>Item</th><th>Quantity</th><th>Pieces</th><th>Amount</th><th>Note</th><th>Action</th></tr></thead><tbody id="invRecords"></tbody></table>
+   <div id="invEmpty" class="empty">No investments recorded for this date.</div>
+  </div>
+ </section>
+</div>
+
+<!-- EXPECTED SALE AND DUMP PAGE -->
+<div id="expectedPage" hidden>
+ <section class="card">
+  <h2>📝 Expected Sale &amp; Dump</h2>
+  <p class="report-note">Selected date ke liye details manually likho aur save karo.</p>
+  <form id="expectedForm">
+   <div class="field">
+    <label for="expectedSale">Expected Sale</label>
+    <textarea id="expectedSale" placeholder="Example: Expected sale ₹5000, biryani 30 plates..."></textarea>
+   </div>
+   <div class="field">
+    <label for="dumpDetails">Dump / Food Waste</label>
+    <textarea id="dumpDetails" placeholder="Example: 2 plates biryani waste, 1 kg rice dump..."></textarea>
+   </div>
+   <button class="save" type="submit">▣ &nbsp; Save Expected Sale &amp; Dump</button>
+   <p id="expectedMessage" hidden style="color:green">Details saved successfully!</p>
+  </form>
+ </section>
+ <section class="card">
+  <h2>☷ Saved Details</h2>
+  <p><strong>Date:</strong> <span id="expectedDateLabel">—</span></p>
+  <div class="field"><label>Expected Sale</label><div id="savedExpected" style="white-space:pre-wrap;overflow-wrap:anywhere;background:#f7f8fa;border:1px solid #e1e6ed;border-radius:9px;padding:15px;min-height:50px">No details saved.</div></div>
+  <div class="field"><label>Dump / Food Waste</label><div id="savedDump" style="white-space:pre-wrap;overflow-wrap:anywhere;background:#f7f8fa;border:1px solid #e1e6ed;border-radius:9px;padding:15px;min-height:50px">No details saved.</div></div>
+  <button type="button" class="del" id="deleteExpected">🗑 Delete details for this date</button>
+ </section>
+</div>
+
+<!-- ALL DATA AND ANALYSIS PAGE -->
+<div id="analysisPage" hidden>
+ <section class="card">
+  <h2>📊 All Data &amp; Analysis</h2>
+  <div class="field">
+   <label for="analysisFilter">Report Period</label>
+   <select id="analysisFilter">
+    <option value="all">All Dates</option>
+    <option value="selected">Selected Date Only</option>
+   </select>
+  </div>
+  <p class="report-note">All Dates mein poora saved record dikhega. Selected Date Only mein upar chuni hui date ka record dikhega.</p>
+  <div class="stats">
+   <div class="stat"><span class="ico">💵</span><div><p>Total Recorded Sales</p><strong id="aSales">₹0</strong></div></div>
+   <div class="stat"><span class="ico">🛒</span><div><p>Total Investment</p><strong id="aInvestment">₹0</strong></div></div>
+   <div class="stat"><span class="ico">📈</span><div><p>Sales − Investment</p><strong id="aDifference">₹0</strong></div></div>
+  </div>
+  <div class="total"><span>Total Recorded Orders</span><strong id="aOrders">0</strong></div>
+  <p class="report-note">Sales − Investment sirf in dono recorded amounts ka difference hai, final profit nahi.</p>
+ </section>
+
+ <section class="card">
+  <h2>🧾 Complete Sales Report</h2>
+  <div class="table-wrap">
+   <table><thead><tr><th>Date</th><th>Item</th><th>Size</th><th>Payment</th><th>Amount</th></tr></thead><tbody id="aSalesRows"></tbody></table>
+   <div id="aSalesEmpty" class="empty">No sales data.</div>
+  </div>
+ </section>
+
+ <section class="card">
+  <h2>💰 Complete Investment Report</h2>
+  <div class="table-wrap">
+   <table><thead><tr><th>Date</th><th>Category</th><th>Item</th><th>Quantity</th><th>Pieces</th><th>Amount</th><th>Note</th></tr></thead><tbody id="aInvestmentRows"></tbody></table>
+   <div id="aInvestmentEmpty" class="empty">No investment data.</div>
+  </div>
+ </section>
+
+ <section class="card">
+  <h2>📝 Expected Sale &amp; Dump Report</h2>
+  <div class="table-wrap">
+   <table><thead><tr><th>Date</th><th>Expected Sale</th><th>Dump / Food Waste</th></tr></thead><tbody id="aExpectedRows"></tbody></table>
+   <div id="aExpectedEmpty" class="empty">No expected sale or dump data.</div>
+  </div>
+ </section>
+</div>
+</main>
+
+<footer>
+ ▤ &nbsp; Data is saved in your browser on this device.<br>
+ Do not clear browser data to keep your records.
+</footer>
+
+<script>
+const $=id=>document.getElementById(id);
+
+const SALES_KEY="biryani_tracker_screenshot_v1";
+const INVEST_KEY="biryani_investments_v1";
+const EXPECTED_KEY="spicy_biryani_expected_dump_v1";
+
+function readStorage(key){
+ try{
+  const d=JSON.parse(localStorage.getItem(key)||"[]");
+  return Array.isArray(d)?d:[];
+ }catch(e){return []}
+}
+function readObject(key){
+ try{
+  const d=JSON.parse(localStorage.getItem(key)||"{}");
+  return d&&typeof d==="object"&&!Array.isArray(d)?d:{};
+ }catch(e){return {}}
+}
+function persist(key,data){
+ try{
+  localStorage.setItem(key,JSON.stringify(data));
+  return true;
+ }catch(e){
+  alert("Data save nahi hua. Browser storage check karo.");
+  return false;
+ }
+}
+function makeId(){
+ return Date.now()+"-"+Math.random().toString(16).slice(2);
+}
+function today(){
+ const d=new Date();
+ return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+}
+function money(n){
+ return "₹"+Number(n||0).toLocaleString("en-IN",{maximumFractionDigits:2});
+}
+
+let sales=readStorage(SALES_KEY);
+let investments=readStorage(INVEST_KEY);
+let expectedRecords=readObject(EXPECTED_KEY);
+$("date").value=today();
+
+/* MENU NAVIGATION */
+function openMenu(){
+ $("drawer").classList.add("open");
+ $("backdrop").hidden=false;
+}
+function closeMenu(){
+ $("drawer").classList.remove("open");
+ $("backdrop").hidden=true;
+}
+$("menuOpen").addEventListener("click",openMenu);
+$("menuClose").addEventListener("click",closeMenu);
+$("backdrop").addEventListener("click",closeMenu);
+
+document.querySelectorAll(".nav-option").forEach(button=>{
+ button.addEventListener("click",()=>{
+  const page=button.dataset.page;
+  $("salesPage").hidden=page!=="sales";
+  $("investmentPage").hidden=page!=="investment";
+  $("expectedPage").hidden=page!=="expected";
+  $("analysisPage").hidden=page!=="analysis";
+  document.querySelectorAll(".nav-option").forEach(b=>b.classList.toggle("active",b===button));
+  closeMenu();
+  renderSales();
+  renderInvestments();
+  loadExpected();
+  renderAnalysis();
+ });
+});
+
+/* SALES */
+let selectedSize="";
+let selectedPayment="";
+
+$("item").addEventListener("change",()=>{
+ $("sizeArea").hidden=!$("item").value;
+ $("paymentArea").hidden=true;
+ selectedSize="";
+ selectedPayment="";
+ $("salesMessage").hidden=true;
+ document.querySelectorAll("[data-size],[data-payment]").forEach(b=>b.classList.remove("active"));
+});
+
+document.querySelectorAll("[data-size]").forEach(button=>{
+ button.addEventListener("click",()=>{
+  selectedSize=button.dataset.size;
+  document.querySelectorAll("[data-size]").forEach(b=>b.classList.toggle("active",b===button));
+  $("paymentArea").hidden=false;
+  selectedPayment="";
+  document.querySelectorAll("[data-payment]").forEach(b=>b.classList.remove("active"));
+ });
+});
+
+document.querySelectorAll("[data-payment]").forEach(button=>{
+ button.addEventListener("click",()=>{
+  selectedPayment=button.dataset.payment;
+  document.querySelectorAll("[data-payment]").forEach(b=>b.classList.toggle("active",b===button));
+ });
+});
+
+$("salesForm").addEventListener("submit",event=>{
+ event.preventDefault();
+ const item=$("item").value;
+ const amount=Number($("amount").value);
+ const date=$("date").value;
+
+ if(!item)return alert("Item select karna compulsory hai.");
+ if(!selectedSize)return alert("HALF ya FULL select karo.");
+ if(!selectedPayment)return alert("CASH ya UPI select karo.");
+ if(!date)return alert("Date select karo.");
+ if(!Number.isFinite(amount)||amount<=0)return alert("Valid amount enter karo.");
+
+ const entry={
+  id:makeId(),date,item,size:selectedSize,payment:selectedPayment,
+  amount:Math.round((amount+Number.EPSILON)*100)/100
+ };
+ sales.push(entry);
+ if(!persist(SALES_KEY,sales)){sales.pop();return}
+
+ renderSales();
+ renderAnalysis();
+ $("salesForm").reset();
+ $("sizeArea").hidden=true;
+ $("paymentArea").hidden=true;
+ $("salesMessage").hidden=false;
+ selectedSize="";
+ selectedPayment="";
+ document.querySelectorAll("[data-size],[data-payment]").forEach(b=>b.classList.remove("active"));
+ $("item").focus();
+});
+
+function renderSales(){
+ const date=$("date").value;
+ const list=sales.filter(s=>s.date===date).slice().reverse();
+
+ $("orders").textContent=list.length;
+ $("halves").textContent=list.filter(s=>s.size==="Half").length;
+ $("fulls").textContent=list.filter(s=>s.size==="Full").length;
+ $("total").textContent=money(list.reduce((sum,s)=>sum+Number(s.amount||0),0));
+
+ $("records").replaceChildren();
+ $("empty").hidden=list.length>0;
+
+ list.forEach(s=>{
+  const tr=document.createElement("tr");
+  [s.date,s.item,s.size,s.payment,money(s.amount)].forEach((value,i)=>{
+   const td=document.createElement("td");
+   if(i===2||i===3){
+    const tag=document.createElement("span");
+    tag.className="tag";
+    tag.textContent=value||"—";
+    td.append(tag);
+   }else{
+    td.textContent=value==null?"—":String(value);
+   }
+   tr.append(td);
+  });
+
+  const td=document.createElement("td");
+  const btn=document.createElement("button");
+  btn.className="del";
+  btn.textContent="🗑";
+  btn.onclick=()=>{
+   if(!confirm("Is sale entry ko delete karna hai?"))return;
+   const old=sales;
+   sales=sales.filter(x=>x.id!==s.id);
+   if(!persist(SALES_KEY,sales)){sales=old;return}
+   renderSales();
+   renderAnalysis();
+  };
+  td.append(btn);
+  tr.append(td);
+  $("records").append(tr);
+ });
+}
+
+/* INVESTMENT */
+const investmentItems={
+ Biryani:["Chicken","Rice","Curd","Extra"],
+ Kabab:["Chicken","Oil","Extra"]
+};
+
+$("invCategory").addEventListener("change",()=>{
+ const category=$("invCategory").value;
+ const itemSelect=$("invItem");
+
+ itemSelect.replaceChildren(new Option("-- Select Item --",""));
+ (investmentItems[category]||[]).forEach(item=>itemSelect.add(new Option(item,item)));
+ itemSelect.disabled=!category;
+
+ $("quantityArea").hidden=true;
+ $("pieceArea").hidden=true;
+ $("unitArea").hidden=true;
+ $("quantity").value="";
+ $("pieces").value="";
+ $("unit").value="";
+ $("invAmount").value="";
+ $("invNote").value="";
+ $("invMessage").hidden=true;
+
+ $("quantity").required=false;
+ $("unit").required=false;
+ $("pieces").required=false;
+});
+
+$("invItem").addEventListener("change",()=>{
+ const item=$("invItem").value;
+ const selected=!!item;
+ const isExtra=item==="Extra";
+ const isChicken=item==="Chicken";
+
+ $("quantityArea").hidden=!selected||isExtra;
+ $("unitArea").hidden=!selected||isExtra;
+ $("pieceArea").hidden=!isChicken;
+
+ $("quantity").value="";
+ $("pieces").value="";
+ $("unit").value="";
+ $("invAmount").value="";
+ $("invNote").value="";
+ $("invMessage").hidden=true;
+
+ $("quantity").required=selected&&!isExtra;
+ $("unit").required=selected&&!isExtra;
+ $("pieces").required=isChicken;
+});
+
+$("investmentForm").addEventListener("submit",event=>{
+ event.preventDefault();
+
+ const category=$("invCategory").value;
+ const item=$("invItem").value;
+ const isExtra=item==="Extra";
+ const isChicken=item==="Chicken";
+ const quantity=isExtra?null:Number($("quantity").value);
+ const pieces=$("pieces").value===""?null:Number($("pieces").value);
+ const unit=isExtra?"":$("unit").value;
+ const amount=Number($("invAmount").value);
+ const date=$("date").value;
+ const note=$("invNote").value.trim();
+
+ if(!category)return alert("Biryani ya Kabab select karo.");
+ if(!item)return alert("Investment item select karo.");
+ if(!isExtra&&(!Number.isFinite(quantity)||quantity<=0))return alert("Quantity sahi enter karo.");
+ if(!isExtra&&!unit)return alert("Quantity unit select karo.");
+ if(isChicken&&(!Number.isInteger(pieces)||pieces<1))return alert("Chicken ke pieces ki sankhya enter karo.");
+ if(!Number.isFinite(amount)||amount<=0)return alert("Valid investment amount enter karo.");
+ if(!date)return alert("Date select karo.");
+
+ const entry={
+  id:makeId(),date,category,item,quantity,unit,
+  pieces:isChicken?pieces:null,
+  amount:Math.round((amount+Number.EPSILON)*100)/100,
+  note
+ };
+
+ investments.push(entry);
+ if(!persist(INVEST_KEY,investments)){investments.pop();return}
+
+ renderInvestments();
+ renderAnalysis();
+
+ $("investmentForm").reset();
+ $("invItem").disabled=true;
+ $("invItem").replaceChildren(new Option("-- Select Item --",""));
+ $("quantityArea").hidden=true;
+ $("pieceArea").hidden=true;
+ $("unitArea").hidden=true;
+ $("quantity").required=false;
+ $("unit").required=false;
+ $("pieces").required=false;
+ $("invMessage").hidden=false;
+ $("invCategory").focus();
+});
+
+function renderInvestments(){
+ const date=$("date").value;
+ const list=investments.filter(s=>s.date===date).slice().reverse();
+
+ $("invCount").textContent=list.length;
+ $("invPieces").textContent=list.reduce((sum,s)=>sum+(Number(s.pieces)||0),0);
+ $("invItems").textContent=list.length;
+ $("invTotal").textContent=money(list.reduce((sum,s)=>sum+Number(s.amount||0),0));
+
+ $("invRecords").replaceChildren();
+ $("invEmpty").hidden=list.length>0;
+
+ list.forEach(s=>{
+  const tr=document.createElement("tr");
+  const quantityText=s.quantity==null?"—":s.quantity+(s.unit?" "+s.unit:"");
+
+  [s.date,s.category||"—",s.item,quantityText,
+   s.pieces==null?"—":s.pieces,money(s.amount),s.note||"—"
+  ].forEach(value=>{
+   const td=document.createElement("td");
+   td.textContent=value==null?"—":String(value);
+   tr.append(td);
+  });
+
+  const td=document.createElement("td");
+  const btn=document.createElement("button");
+  btn.className="del";
+  btn.textContent="🗑";
+  btn.onclick=()=>{
+   if(!confirm("Is investment entry ko delete karna hai?"))return;
+   const old=investments;
+   investments=investments.filter(x=>x.id!==s.id);
+   if(!persist(INVEST_KEY,investments)){investments=old;return}
+   renderInvestments();
+   renderAnalysis();
+  };
+  td.append(btn);
+  tr.append(td);
+  $("invRecords").append(tr);
+ });
+}
+
+/* EXPECTED SALE & DUMP */
+function loadExpected(){
+ const date=$("date").value;
+ const record=expectedRecords[date]||{expectedSale:"",dumpDetails:""};
+
+ $("expectedDateLabel").textContent=date||"—";
+ $("expectedSale").value=record.expectedSale||"";
+ $("dumpDetails").value=record.dumpDetails||"";
+ $("savedExpected").textContent=record.expectedSale||"No details saved.";
+ $("savedDump").textContent=record.dumpDetails||"No details saved.";
+ $("expectedMessage").hidden=true;
+}
+
+$("expectedForm").addEventListener("submit",event=>{
+ event.preventDefault();
+ const date=$("date").value;
+ if(!date)return alert("Date select karo.");
+
+ const previous=expectedRecords[date];
+ expectedRecords[date]={
+  expectedSale:$("expectedSale").value,
+  dumpDetails:$("dumpDetails").value
+ };
+
+ if(!persist(EXPECTED_KEY,expectedRecords)){
+  if(previous)expectedRecords[date]=previous;
+  else delete expectedRecords[date];
+  return;
+ }
+
+ loadExpected();
+ $("expectedMessage").hidden=false;
+ renderAnalysis();
+});
+
+$("deleteExpected").addEventListener("click",()=>{
+ const date=$("date").value;
+ if(!date)return alert("Date select karo.");
+ if(!expectedRecords[date])return alert("Is date ke liye koi saved details nahi hain.");
+ if(!confirm("Is date ki Expected Sale aur Dump details delete karni hain?"))return;
+
+ const previous=expectedRecords[date];
+ delete expectedRecords[date];
+
+ if(!persist(EXPECTED_KEY,expectedRecords)){
+  expectedRecords[date]=previous;
+  return;
+ }
+
+ loadExpected();
+ renderAnalysis();
+});
+
+/* ALL DATA & ANALYSIS */
+function renderAnalysis(){
+ const filter=$("analysisFilter").value;
+ const selectedDate=$("date").value;
+ const includeDate=date=>filter==="all"||date===selectedDate;
+
+ const saleList=sales
+  .filter(s=>includeDate(s.date))
+  .slice()
+  .sort((a,b)=>String(b.date).localeCompare(String(a.date)));
+
+ const invList=investments
+  .filter(s=>includeDate(s.date))
+  .slice()
+  .sort((a,b)=>String(b.date).localeCompare(String(a.date)));
+
+ const expList=Object.entries(expectedRecords)
+  .filter(([date])=>includeDate(date))
+  .sort((a,b)=>b[0].localeCompare(a[0]));
+
+ const saleTotal=saleList.reduce((sum,s)=>sum+Number(s.amount||0),0);
+ const invTotal=invList.reduce((sum,s)=>sum+Number(s.amount||0),0);
+
+ $("aSales").textContent=money(saleTotal);
+ $("aInvestment").textContent=money(invTotal);
+ $("aDifference").textContent=money(saleTotal-invTotal);
+ $("aOrders").textContent=saleList.length;
+
+ function fillTable(id,emptyId,rows){
+  const body=$(id);
+  body.replaceChildren();
+  $(emptyId).hidden=rows.length>0;
+
+  rows.forEach(values=>{
+   const tr=document.createElement("tr");
+   values.forEach(value=>{
+    const td=document.createElement("td");
+    td.textContent=value==null||value===""?"—":String(value);
+    tr.append(td);
+   });
+   body.append(tr);
+  });
+ }
+
+ fillTable("aSalesRows","aSalesEmpty",saleList.map(s=>[
+  s.date,s.item,s.size,s.payment,money(s.amount)
+ ]));
+
+ fillTable("aInvestmentRows","aInvestmentEmpty",invList.map(s=>[
+  s.date,
+  s.category||"—",
+  s.item,
+  s.quantity==null?"—":s.quantity+(s.unit?" "+s.unit:""),
+  s.pieces==null?"—":s.pieces,
+  money(s.amount),
+  s.note||"—"
+ ]));
+
+ fillTable("aExpectedRows","aExpectedEmpty",expList.map(([date,record])=>[
+  date,
+  record.expectedSale||"—",
+  record.dumpDetails||"—"
+ ]));
+}
+
+$("analysisFilter").addEventListener("change",renderAnalysis);
+
+/* DATE CHANGE */
+$("date").addEventListener("change",()=>{
+ renderSales();
+ renderInvestments();
+ loadExpected();
+ renderAnalysis();
+});
+
+/* INITIAL DISPLAY */
+renderSales();
+renderInvestments();
+loadExpected();
+renderAnalysis();
+</script>
+</body>
+</html>
